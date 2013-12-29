@@ -15,3 +15,4 @@ learn in the REPL.
 1.  Add a <textarea>
 2.  Make history work with the up arrow
 3.  Use fancy CSS
+4.  Allow debug level to be set from the REPL
