@@ -620,8 +620,16 @@ function formatList(result) {
 }
 
 
-document.onsubmit = updateConsole;
-var prompt = document.x.prompt
+document.x.onsubmit = function() {
+    updateConsole(document.x.prompt);
+    document.x.prompt.value = "";
+    return false;
+};
+
+document.y.onsubmit = function() {
+    updateConsole(document.y.nock);
+    return false;
+};
 
 function evalNock(command) {
     var x = parseNock(command);
@@ -629,7 +637,7 @@ function evalNock(command) {
     return formatList(result);
 }
 
-function updateConsole() {
+function updateConsole(prompt) {
     log.append("> " + prompt.value)
 
     try {
@@ -638,9 +646,6 @@ function updateConsole() {
     catch(e) {
         log.append(e);
     }
-    
-    prompt.value = "";    
-    return false;
 };
 
 log.append("Nock version " + NOCK_VERSION);
