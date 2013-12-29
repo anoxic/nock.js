@@ -1,0 +1,17 @@
+-----------------------------------------------------------------
+                           Nock.js REPL
+
+This is a fork of https://github.com/famousj/nock.js, but instead
+of operating on Node.js, uses a browser-based REPL.
+
+Try it out: just open nock.htm in your browser. If you don't know
+what Nock is, try here, http://ow.ly/s80MC, and test out what you
+learn in the REPL.
+
+
+-----------------------------------------------------------------
+                               TODO
+
+1.  Add a <textarea>
+2.  Make history work with the up arrow
+3.  Use fancy CSS
