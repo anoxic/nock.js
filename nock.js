@@ -1,6 +1,10 @@
+var $ = function(i) {
+    return document.getElementById(i);
+}
+
 var log = {
     append: function(i) {
-        var x = document.getElementById("out");
+        var x = $("out");
         x.innerHTML = x.innerHTML + i + "\n";
     }
 };
@@ -802,5 +806,14 @@ function updateConsole(prompt) {
     }
 };
 
-log.append("<tt>Nock version " + NOCK_VERSION + "</tt>");
-log.append("<tt>Nock.js version " + NOCKJS_VERSION + "</tt>");
+$('nock_version').innerHTML = NOCK_VERSION;
+$('nockjs_version').innerHTML = NOCKJS_VERSION;
+$('debug').value = DEBUG;
+
+$('debug').onkeyup = function() {
+    if (this.value === '0' || this.value === '1' || this.value === '2') {
+        DEBUG = parseInt(this.value);
+        $('debug').value = DEBUG;
+    }
+};
+
