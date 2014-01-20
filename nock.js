@@ -802,5 +802,5 @@ function updateConsole(prompt) {
     }
 };
 
-log.append("Nock version " + NOCK_VERSION);
-log.append("Nock.js version " + NOCKJS_VERSION);
+log.append("<tt>Nock version " + NOCK_VERSION + "</tt>");
+log.append("<tt>Nock.js version " + NOCKJS_VERSION + "</tt>");
