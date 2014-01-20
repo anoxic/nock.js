@@ -792,7 +792,7 @@ document.y.onsubmit = function() {
 };
 
 function updateConsole(prompt) {
-    log.append("&gt; " + prompt.value)
+    log.append("<b>&gt; " + prompt.value + "</b>")
 
     try {
         log.append(evalNock(prompt.value));
