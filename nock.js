@@ -1,3 +1,10 @@
+var log = {
+    append: function(i) {
+        var x = document.getElementById("out");
+        x.innerHTML = x.innerHTML + i + "\n";
+    }
+};
+
 /*
  * For details as to what's going on here, check out Chapter 2 of the Urbit
  * documentation:
@@ -7,7 +14,7 @@
 NOCK_VERSION = "5K";
 NOCKJS_VERSION = "0.2";
 
-DEBUG = 1;
+DEBUG = 0;
 
 var indent = 0;
 
@@ -16,7 +23,7 @@ function showDebug(msg) {
         for (var i = 0; i < indent; i++) 
             process.stdout.write("    ");
             
-        console.log(msg);
+        log.append(msg);
     }
 }
 
@@ -623,7 +630,7 @@ function evalNock(str) {
      * detect a crash or get a value.
      */
     
-    if (DEBUG > 1) console.log("Evaluating: '" + str + "'");
+    if (DEBUG > 1) log.append("Evaluating: '" + str + "'");
 
     var operatorRegex = "^" + operators;
     if (!isOperator(str)) {
@@ -735,17 +742,65 @@ function reduceExpression(expr) {
     return expr;
 }
 
-// Exports for node.js
-//
-exports.NOCK_VERSION = NOCK_VERSION;
-exports.NOCKJS_VERSION = NOCKJS_VERSION;
+// stuff for the Web REPL
 
-exports.evalNock = function(command) {
-    return evalNock(command);
+var history = {
+    stack: [],
+    p: 0,
+    x: null
 }
 
-exports.setDebugging = function(debugging) {
-    DEBUG = debugging;
-}
-    
-    
+document.x.prompt.onkeydown = function(e) {
+    switch  (e.keyIdentifier) {
+        case "Up":
+            if (history.p < history.stack.length) {
+                if (history.p == 0)
+                    history.x = this.value;
+
+                history.p += 1;
+                this.value = history.stack[history.p - 1];
+            }
+        break;
+
+        case "Down":
+            if (history.p > 0) {
+                history.p -= 1;
+
+                if (history.p > 0)
+                    this.value = history.stack[history.p - 1];
+            } 
+
+            if (history.p == 0 && history.x != null) {
+                this.value = history.x;
+                history.x = null;
+            }
+        break;
+    }
+};
+
+document.x.onsubmit = function() {
+    updateConsole(this.prompt);
+    history.stack.unshift(this.prompt.value);
+    history.p = 0;
+    this.prompt.value = "";
+    return false;
+};
+
+document.y.onsubmit = function() {
+    updateConsole(document.y.nock);
+    return false;
+};
+
+function updateConsole(prompt) {
+    log.append("> " + prompt.value)
+
+    try {
+        log.append(evalNock(prompt.value));
+    } 
+    catch(e) {
+        log.append(e);
+    }
+};
+
+log.append("Nock version " + NOCK_VERSION);
+log.append("Nock.js version " + NOCKJS_VERSION);
